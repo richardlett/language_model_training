@@ -17,9 +17,13 @@ This module creates dataset loaders for validation testing, splitting data based
 It ensures validation genomes are in one subset of families, while training genomes are in 
 the complementary set.
 
+
+
 - Requires at least a couple of nodes for RAM usage without more stringent filtering (Not sure exactly, I always use at least 4)
 - Shards training genomes across nodes evenly, maintaining approximate same distribution with regards to training when sampling.
 - validation genomes are loaded on every node
+- I do some crude phylogenetic balancing to try to get more respresentative results.
+
 
 Note: Initial plan was to reduce genome count further, but kept as is for comparison purposes. uses around 75 k genomes.
 """
