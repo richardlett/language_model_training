@@ -313,7 +313,7 @@ class Medusa(nn.Module):
         x = x.to(torch.long)
 
         with autocast(device_type='cuda', dtype=torch.bfloat16):
-            x, _ = self.backbone(x,seq_lengths=lens)  # Assuming x is [batch, length, dim]
+            x, _ = self.backbone(x,seq_lengths=lens)
             # print(x.dtype)
         x = x.float()
         x = torch.sum(x, dim=1).squeeze()
