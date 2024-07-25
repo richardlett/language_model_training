@@ -1,43 +1,28 @@
 print("in python")
 import os
 import math
-from collections import namedtuple
-from itertools import product
+from itertools import product, combinations
 from functools import partial
+from collections import namedtuple
 from typing import Optional, Tuple, Union
+
+import numpy as np
+import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch import linalg, autocast
 from torch.nn import Parameter, Dropout
+from torch.cuda.amp import GradScaler
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.optim.lr_scheduler import _LRScheduler
-from torch.cuda.amp import GradScaler
-from torch import autocast, GradScaler
-
-from torch import linalg
 from torch import distributed as dist
 
-from tqdm import tqdm
-import matplotlib.pyplot as plt
-
-# magic numbers
-model_width = 1536
-num_layers = 8
-
-peak_lr = 3 * 6e-4
-min_lr = 2e-5
-
-local_batch_size_train = 128
-
-warmup_steps= 10_000
-total_steps= 150_000
-
-
-weight_decay = 5e-2
+from sklearn.metrics import roc_auc_score
 
 from family_split_validation_loader import SplitDNASequencesDataset
-
 
 from mamba_ssm import Mamba
 from mamba_ssm.models.config_mamba import MambaConfig
@@ -52,9 +37,15 @@ except ImportError:
 from caduceus.caduceus.configuration_caduceus import CaduceusConfig
 from caduceus.caduceus.modeling_caduceus import CaduceusEmbeddings, RCPSAddNormWrapper, create_block
 
-from sklearn.metrics import roc_auc_score
-from itertools import combinations
-import numpy as np
+# Magic numbers
+model_width = 1536
+num_layers = 8
+peak_lr = 3 * 6e-4
+min_lr = 2e-5
+local_batch_size_train = 128
+warmup_steps = 10_000
+total_steps = 150_000
+weight_decay = 5e-2
 
 
 def setup(rank, world_size):
