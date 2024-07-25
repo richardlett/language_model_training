@@ -44,3 +44,5 @@ time srun --nodes=4 --ntasks-per-node=1 --gpus-per-node=4 jobscript_cross_valid_
 For me, it takes around 5 minutes to start actually training when running  on 4 nodes on perlmutter.
 
 if you use more or less GPUS per node, you'll need to adjust the jobscript_cross_valid_example.sh file, along with learning rate or per node batch size.
+
+This doesn't use ~108k genomes for a full run, it uses around 75k genomes.
