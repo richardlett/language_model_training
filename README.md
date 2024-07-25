@@ -36,6 +36,8 @@ It takes approximately 5 minutes to start training when running on 4 nodes on Pe
 If you use more or fewer GPUs per node or nodes, adjust the `jobscript_cross_valid_example.sh` file, along with the learning rate or per-node batch size.
 This example uses around 75k genomes instead of the full ~108k genomes.
 
+With hyperparameters as is, this model ~ 355 million parameters. 
+
 ## Notes
 
 AUC is calculated from holdout genomes. See `family_split_validation_loader.py` for sampling details. While we shard training genomes, all nodes have access to all validation genomes (500 in total).
