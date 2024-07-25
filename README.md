@@ -26,7 +26,7 @@ Perlmutter minimal example:
 salloc --nodes 4 --qos interactive --time 4:00:00 --constraint gpu -A YOUR_ACCOUNT
 # Load Python environment
 # TBD
-# Load the NVIDIA Collective Communications Library
+# Load NVIDIA Collective Communications Library
 module load nccl
 # With this repo as the current directory
 time srun --nodes=4 --ntasks-per-node=1 --gpus-per-node=4 jobscript_cross_valid_example.sh
