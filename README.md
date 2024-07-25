@@ -12,7 +12,7 @@ Additionally, follow instructions to install my Rust util for data loading: http
 
 
 
-perlmutter usage:
+perlmutter minimal example:
 
 ```
 salloc --nodes 4 --qos interactive --time 4:00:00 --constraint gpu -A YOUR_ACCOUNT
