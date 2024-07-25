@@ -84,7 +84,7 @@ class CurricularFace(nn.Module):
         self.register_buffer('t', torch.zeros(1))
         nn.init.normal_(self.kernel, std=0.01)
 
-    def forward(self, embeddings, label, step=10000):
+    def forward(self, embeddings, label):
         embeddings = l2_norm(embeddings, axis=1)
         kernel_norm = l2_norm(self.kernel, axis=0)
         cos_theta = torch.mm(embeddings, kernel_norm).clamp(-1, 1)  # For numerical stability
@@ -308,7 +308,7 @@ class Medusa(nn.Module):
         self.arcface = CurricularFace(embed_dim, n_classes,s=30.0,m=0.0)
         # self.weight = Parameter(torch.FloatTensor(n_classes, embed_dim))
         # nn.init.xavier_uniform_(self.weight) 
-    def forward(self, x, lens=None,step=10000):
+    def forward(self, x, lens=None):
         x, y = x
         x = x.to(torch.long)
 
@@ -320,7 +320,7 @@ class Medusa(nn.Module):
 
         normed_embeddings = F.normalize(x)
         # out =F.linear(normed_embeddings,F.normalize(self.weight))
-        out, out2 = self.arcface(x, y,step=step)
+        out, out2 = self.arcface(x, y)
         # out *= 30.0
         # log softmax + nll loss is more stable than softmax + cross entropy, they're the same thing
         return F.log_softmax(out, dim=1,dtype=torch.float32), F.log_softmax(out, dim=1,dtype=torch.float32), normed_embeddings
@@ -444,7 +444,7 @@ def main_subloop():
             mini_batch_labels_indices = labels_indices[start_idx:end_idx].to(device)
             dist.barrier()
 
-            logits, _, _ = model((mini_batch_padded_texts, mini_batch_labels_indices), step=step)
+            logits, _, _ = model((mini_batch_padded_texts, mini_batch_labels_indices))
             loss = F.nll_loss(logits, mini_batch_labels_indices)
 
             mega_batch_loss += loss.item() * logits.size(0)
