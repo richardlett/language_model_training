@@ -1,4 +1,4 @@
-# language_model_training
+# language_model_training Minimal example
 
 I ran with python 3.9.19, i'll try to give a formula for a conda environment soon
 
@@ -46,3 +46,27 @@ For me, it takes around 5 minutes to start actually training when running  on 4 
 if you use more or less GPUS per node, you'll need to adjust the jobscript_cross_valid_example.sh file, along with learning rate or per node batch size.
 
 This doesn't use ~108k genomes for a full run, it uses around 75k genomes.
+
+## Notes
+
+AUC is calculated from holdout genomes. See `family_split_validation_loader.py` for sampling details. While we shard training genomes, all nodes have access to all validation genomes (only 500 in total).
+
+The training loop consists of:
+1. A training epoch (defined by a fixed number of batches)
+2. A validation mega batch
+
+After the validation batch, we calculate the AUC from all pairwise distances as a binary classification problem, using these distances for thresholding. AUC is calculated per rank (GPU), then averaged across all ranks.
+
+
+Log files outputted (current working directory)
+
+1. `pairwise_distances_histogram.png`:
+   Continuously updated plot showing distribution of pairwise distances between genome pairs (same species vs different species).
+
+2. `AUC_log.tsv`:
+   TSV file logging last validation AUC and number of gradient steps processed.
+
+3. `log_file.txt`:
+   Records training loss and gradient steps. Note: CurriculumFace loss used, so values less interpretable than standard Cross Entropy.
+
+These logs track training progress and the model's ability to distinguish between genomic sequences from same/different species.
