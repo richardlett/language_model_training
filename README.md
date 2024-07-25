@@ -1,5 +1,3 @@
-I've copyedited your README markdown file. Here's the revised version:
-
 # language_model_training Minimal Example
 
 ## Setup 
