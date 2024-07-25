@@ -1,4 +1,4 @@
-# language_model_training Minimal Example
+# language_model_training simple Example
 
 ## Setup 
 
