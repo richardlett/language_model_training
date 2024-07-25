@@ -44,7 +44,7 @@ The training loop consists of:
 1. A training epoch (defined by a fixed number of batches)
 2. A validation mega batch
 
-After the validation batch, we calculate the AUC from all pairwise distances as a binary classification problem, using these distances for thresholding. AUC is calculated per rank (GPU), then averaged across all ranks.
+After the validation batch, we calculate the AUC from all pairwise distances as a binary classification problem (same vs different genome), using these distances for thresholding. AUC is calculated per rank (GPU), then averaged across all ranks.
 
 Log files outputted (current working directory):
 1. `pairwise_distances_histogram.png`:
