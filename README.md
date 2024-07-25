@@ -2,10 +2,11 @@
 
 I ran with python 3.9.19, i'll try to give a formula for a conda environment soon
 
-
+Most important part:
+```
 pip install causal-conv1d>=1.4.0
 pip install mamba==1.2.2
-
+```
 perlmutter usage:
 
 ```
