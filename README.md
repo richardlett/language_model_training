@@ -38,7 +38,7 @@ This example uses around 75k genomes instead of the full ~108k genomes.
 
 ## Notes
 
-AUC is calculated from holdout genomes. See `family_split_validation_loader.py` for sampling details. While we shard training genomes, all nodes have access to all validation genomes (only 500 in total).
+AUC is calculated from holdout genomes. See `family_split_validation_loader.py` for sampling details. While we shard training genomes, all nodes have access to all validation genomes (500 in total).
 
 The training loop consists of:
 1. A training epoch (defined by a fixed number of batches)
