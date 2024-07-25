@@ -10,7 +10,12 @@ pip install mamba==1.2.2
 
 Additionally, follow instructions to install my Rust util for data loading: https://github.com/richardlett/kmer_counter_python_rs 
 
-You'll also need to download the genomes and metadata tsvs from GTDB: https://gtdb.ecogenomic.org/downloads and edit the following lines in `family_split_validation_loader.py`:
+You'll also need to download the represesntative and metadata tsvs from GTDB: https://gtdb.ecogenomic.org/downloads.
+
+Note, use the alternative mirror, the primary one is for Austrailia
+
+
+Extract the tarballs, then edit the following lines in `family_split_validation_loader.py`:
 
 ```
 GTDB_DOWNLOAD_PATH = "/pscratch/sd/r/richardl/gtdb220_2/gtdb_genomes_reps_r220/database"
