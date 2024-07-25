@@ -322,6 +322,7 @@ class Medusa(nn.Module):
         # out =F.linear(normed_embeddings,F.normalize(self.weight))
         out, out2 = self.arcface(x, y,step=step)
         # out *= 30.0
+        # log softmax + nll loss is more stable than softmax + cross entropy, they're the same thing
         return F.log_softmax(out, dim=1,dtype=torch.float32), F.log_softmax(out, dim=1,dtype=torch.float32), normed_embeddings
 
 
