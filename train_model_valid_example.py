@@ -474,7 +474,7 @@ def main_subloop():
                     with open('log_file.txt', 'a') as log_file:
                         log_file.write(f'{avg_mega_batch_loss:.4f}\t{step//2}\n')
 
-        if step >= 150000:
+        if step >= 150000*2:
             dist.destroy_process_group()
             exit()
 
