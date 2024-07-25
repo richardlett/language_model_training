@@ -529,21 +529,9 @@ while True:
                 avg_metrics = average_metrics(mega_batch_loss, num_train, mega_batch_correct, i, mega_batch_loss_orig, device)
                 avg_mega_batch_loss, avg_mega_batch_accuracy, avg_mega_batch_val_loss = avg_metrics
                 
-                # if torch.isnan(avg_mega_batch_loss):
-                #     print(f"NaN detected in loss, reloading last checkpoint at mega batch {current_mega_batch_index - 3}")
-                #     checkpoint = torch.load('3_cross_valid.pt')
-                #     model.load_state_dict(checkpoint['model_state_dict'])
-                #     optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-                #     scaler.load_state_dict(checkpoint['scaler_state_dict'])
-                #     scheduler.load_state_dict(checkpoint['annealing_dict'])
-                #     loss_values = checkpoint['loss_values']
-                #     accuracy_values = checkpoint['accuracy_values']
-                #     current_mega_batch_index = checkpoint['current_mega_batch_index']
-                #     step = checkpoint['step']
-                #     continue  # Skip further processing of this mega_batch
                 if rank == 0:
                     print(f"\t \t \t \t step {step//2}/300000; {step/300000:.4f} Average Loss per Mega Batch: {avg_mega_batch_loss:.4f}")
-                    with open('/pscratch/sd/r/richardl/log_file.txt', 'a') as log_file:
+                    with open('log_file.txt', 'a') as log_file:
                         log_file.write(f'{(avg_mega_batch_loss)}\t{avg_mega_batch_accuracy:.4f}\t{step//2}\n')
      # run one mega batch on training set 
 
@@ -586,10 +574,8 @@ while True:
                 mini_batch_sizes = seq_len[start_idx:end_idx].to(device)
                 dist.barrier()
 
-            
                 logits, logits2, embeddings = model((mini_batch_padded_texts, None))
                                 
-        
                 embeddings_list.append(embeddings.detach().cpu())
                 labels_list.append(mini_batch_labels_indices.detach().cpu())
 
@@ -599,16 +585,12 @@ while True:
             pairwise_distances = torch.cdist(all_embeddings, all_embeddings, p=2).flatten()
 
 
-            # Calculate labels for pairs (1 if same class, 0 if different)
             pair_labels = torch.tensor([1 if all_labels[i] == all_labels[j] else 0 for i, j in combinations(range(len(all_labels)), 2)])
 
-            # Use only the upper triangle of the distance matrix (excluding diagonal)
             upper_triangle_indices = torch.triu_indices(len(all_labels), len(all_labels), offset=1)
             pairwise_distances = pairwise_distances[upper_triangle_indices[0] * len(all_labels) + upper_triangle_indices[1]]
 
-            # Calculate AUC for ranks
             auc = roc_auc_score(pair_labels.numpy(), -pairwise_distances.numpy())  # Use negative distances as scores
-            # average across ranks
             avg_metrics = average_metrics(auc, 1, 0, 1, auc, device)
             auc, avg_mega_batch_accuracy, avg_mega_batch_val_loss = avg_metrics
             if rank == 0:
@@ -635,13 +617,12 @@ while True:
 
                 plt.tight_layout()
 
-                # Save the plot
-                plt.savefig('pairwise_distances_histogram_4.png')
+                plt.savefig('pairwise_distances_histogram.png')
                 plt.close()
 
                 print(f"AUC: {auc}")
 
-                print("Histogram saved as 'pairwise_distances_histogram_4.png'. Note: Only uses root node validation points for visualiztion")
-                with open('/pscratch/sd/r/richardl/AUC_log.tsv', 'a') as the_file:
+                print("Histogram saved as 'pairwise_distances_histogram.png'. Note: Only uses root node validation points for visualiztion")
+                with open('AUC_log.tsv', 'a') as the_file:
                     the_file.write(f'{auc:.4f}\t{0:.4f}\t{step//2}\n')
 
