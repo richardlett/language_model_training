@@ -310,7 +310,7 @@ from torch import autocast
 class Medusa(nn.Module):
     def __init__(self, d_model,n_classes,embed_dim=1536):
         super(Medusa, self).__init__()
-        self.backbone = CaduceusMixerModel(CaduceusConfig(d_model=embed_dim, n_layer=8, vocab_size=1025, rcps=False, bidirectional=True, rms_norm=False, fused_add_norm=True,bidirectional_weight_tie=False),dropout_rate=0.0,dmodel=embed_dim)
+        self.backbone = CaduceusMixerModel(CaduceusConfig(d_model=embed_dim, n_layer=8, vocab_size=1024, rcps=False, bidirectional=True, rms_norm=False, fused_add_norm=True,bidirectional_weight_tie=False),dropout_rate=0.0,dmodel=embed_dim)
         self.arcface = CurricularFace(embed_dim, n_classes,s=30.0,m=0.0)
         # self.weight = Parameter(torch.FloatTensor(n_classes, embed_dim))
         # nn.init.xavier_uniform_(self.weight) 
