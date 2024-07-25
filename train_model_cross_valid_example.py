@@ -533,7 +533,6 @@ while True:
                     print(f"\t \t \t \t step {step//2}/300000; {step/300000:.4f} Average Loss per Mega Batch: {avg_mega_batch_loss:.4f}")
                     with open('log_file.txt', 'a') as log_file:
                         log_file.write(f'{(avg_mega_batch_loss)}\t{avg_mega_batch_accuracy:.4f}\t{step//2}\n')
-     # run one mega batch on training set 
 
     with torch.no_grad():
         model.eval()
@@ -590,7 +589,7 @@ while True:
             upper_triangle_indices = torch.triu_indices(len(all_labels), len(all_labels), offset=1)
             pairwise_distances = pairwise_distances[upper_triangle_indices[0] * len(all_labels) + upper_triangle_indices[1]]
 
-            auc = roc_auc_score(pair_labels.numpy(), -pairwise_distances.numpy())  # Use negative distances as scores
+            auc = roc_auc_score(pair_labels.numpy(), -pairwise_distances.numpy())  
             avg_metrics = average_metrics(auc, 1, 0, 1, auc, device)
             auc, avg_mega_batch_accuracy, avg_mega_batch_val_loss = avg_metrics
             if rank == 0:
