@@ -41,7 +41,7 @@ from caduceus.caduceus.modeling_caduceus import CaduceusEmbeddings, RCPSAddNormW
 model_width = 1536
 num_layers = 8
 peak_lr = 3 * 6e-4
-min_lr = 2e-5
+min_lr = 2e-4
 local_batch_size_train = 128
 warmup_steps = 10_000
 total_steps = 150_000
