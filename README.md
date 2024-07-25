@@ -14,7 +14,7 @@ Additionally:
 1. Install the Rust utility for data loading: https://github.com/richardlett/kmer_counter_python_rs
 2. Download the representative and metadata TSVs from GTDB: https://gtdb.ecogenomic.org/downloads
    Note: Use the alternative mirror; the primary one is for Australia.
-3. Extract the tarballs, then edit the following lines in `family_split_validation_loader.py`:
+3. Extract the tarball / unzip the tsvs, then edit the following lines in `family_split_validation_loader.py`:
    ```python
    GTDB_DOWNLOAD_PATH = "/pscratch/sd/r/richardl/gtdb220_2/gtdb_genomes_reps_r220/database"
    BAC_METADATA_PATH = '/pscratch/sd/r/richardl/gtdb220_2/bac120_metadata_r220.tsv'
